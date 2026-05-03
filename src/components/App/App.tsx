@@ -17,12 +17,16 @@ function App() {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const handleSearch = async (query: string) => {
+    const cleanQuery = query.trim();
+
+    if (!cleanQuery) return;
+
     try {
       setError(false);
       setMovies([]);
       setLoading(true);
 
-      const data = await fetchMovies(query);
+      const data = await fetchMovies(cleanQuery);
 
       if (data.length === 0) {
         toast.error('No movies found for your request.');
@@ -57,7 +61,7 @@ function App() {
 
       {error && <ErrorMessage />}
 
-      {!isLoading && !error && (
+      {movies.length > 0 && !isLoading && !error && (
         <MovieGrid
           movies={movies}
           onSelect={movie => setSelectedMovie(movie)}

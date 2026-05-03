@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import css from '../MovieModal/MovieModal.module.css';
 import type { Movie } from '../../types/movie';
+import noImage from '../../assets/no-image.png';
 
 interface MovieModalProps {
   movie: Movie;
@@ -9,10 +10,12 @@ interface MovieModalProps {
 }
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
-const FALLBACK_IMAGE = 'https://via.placeholder.com/1280x720';
+const FALLBACK_IMAGE = noImage;
 
 const getBackdropUrl = (path: string | null) => {
-  return path ? `${IMAGE_BASE_URL}${path}` : FALLBACK_IMAGE;
+  if (!path) return FALLBACK_IMAGE;
+
+  return `${IMAGE_BASE_URL}${path}`;
 };
 
 const MovieModal = ({ movie, onClose }: MovieModalProps) => {

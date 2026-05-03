@@ -1,5 +1,6 @@
 import css from './MovieGrid.module.css';
 import type { Movie } from '../../types/movie';
+import noImage from '../../assets/no-image.png';
 
 interface MovieGridProps {
   movies: Movie[];
@@ -7,10 +8,12 @@ interface MovieGridProps {
 }
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
-const FALLBACK_IMAGE = 'https://via.placeholder.com/500';
+const FALLBACK_IMAGE = noImage;
 
 const getImageUrl = (posterPath: string | null) => {
-  return posterPath ? `${IMAGE_BASE_URL}${posterPath}` : FALLBACK_IMAGE;
+  if (!posterPath) return FALLBACK_IMAGE;
+
+  return `${IMAGE_BASE_URL}${posterPath}`;
 };
 
 const MovieGrid = ({ movies, onSelect }: MovieGridProps) => {
