@@ -4,15 +4,17 @@ import { useState } from 'react';
 import SearchBar from '../SearchBar/SearchBar';
 import MovieGrid from '../MovieGrid/MovieGrid';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import fetchMovies from '../../services/movieService';
 import Loader from '../Loader/Loader';
+import MovieModal from '../MovieModal/MovieModal';
+import fetchMovies from '../../services/movieService';
 import type { Movie } from '../../types/movie';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const handleSearch = async (query: string) => {
     try {
@@ -37,6 +39,18 @@ function App() {
 
   return (
     <div className={css.container}>
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 3000,
+
+          style: {
+            background: '#f8d7da',
+            color: '#721c24',
+          },
+        }}
+      />
+
       <SearchBar onSubmit={handleSearch} />
 
       {isLoading && <Loader />}
@@ -44,7 +58,16 @@ function App() {
       {error && <ErrorMessage />}
 
       {!isLoading && !error && (
-        <MovieGrid movies={movies} onSelect={movie => console.log(movie)} />
+        <MovieGrid
+          movies={movies}
+          onSelect={movie => setSelectedMovie(movie)}
+        />
+      )}
+      {selectedMovie && (
+        <MovieModal
+          movie={selectedMovie}
+          onClose={() => setSelectedMovie(null)}
+        />
       )}
     </div>
   );

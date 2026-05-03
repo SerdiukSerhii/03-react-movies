@@ -7,6 +7,11 @@ interface MovieGridProps {
 }
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+const FALLBACK_IMAGE = 'https://via.placeholder.com/500';
+
+const getImageUrl = (posterPath: string | null) => {
+  return posterPath ? `${IMAGE_BASE_URL}${posterPath}` : FALLBACK_IMAGE;
+};
 
 const MovieGrid = ({ movies, onSelect }: MovieGridProps) => {
   if (!movies.length) return null;
@@ -15,14 +20,13 @@ const MovieGrid = ({ movies, onSelect }: MovieGridProps) => {
     <ul className={css.grid}>
       {movies.map(movie => (
         <li key={movie.id}>
-          <div className={css.card} onClick={() => onSelect(movie)}>
+          <div
+            className={css.card}
+            onClick={() => onSelect(movie)}
+          >
             <img
               className={css.image}
-              src={
-                movie.poster_path
-                  ? `${IMAGE_BASE_URL}${movie.poster_path}`
-                  : 'https://via.placeholder.com/500'
-              }
+              src={getImageUrl(movie.poster_path)}
               alt={movie.title}
               loading="lazy"
             />

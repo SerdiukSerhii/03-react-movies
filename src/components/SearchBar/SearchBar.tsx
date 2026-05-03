@@ -29,7 +29,10 @@ const SearchBar = ({ onSubmit }: SearchBarProps) => {
           Powered by TMDB
         </a>
 
-        <form className={styles.form} action={handleSubmit}>
+        <form
+          className={styles.form}
+          action={handleSubmit}
+        >
           <input
             className={styles.input}
             type="text"
@@ -39,7 +42,10 @@ const SearchBar = ({ onSubmit }: SearchBarProps) => {
             autoFocus
           />
 
-          <button className={styles.button} type="submit">
+          <button
+            className={styles.button}
+            type="submit"
+          >
             Search
           </button>
         </form>
